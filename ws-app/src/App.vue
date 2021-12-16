@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
+    <img src="./assets/wallhaven-e7voyl_1280x960.png">
     <router-view/>
   </div>
 </template>
