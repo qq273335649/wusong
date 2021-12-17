@@ -2,9 +2,9 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <img src="../assets/wallhaven-o37xzl_1920x1080.png" />
-    <ul v-for="item in list" :key="item._id">
-      <li>{{ item.student.name }} - {{item.student.age}}</li>
-    </ul>
+    <li v-for="item in list">
+      {{ item.message }}
+    </li>
   </div>
 </template>
 
