@@ -22,6 +22,18 @@ router.get('/student',async(ctx,next)=>{
 		student
 	}
 })
+router.get('/api/student',async(ctx,next)=>{
+	let student = await Student.find({}, function (err, docs) {
+		if(err){
+			return
+		}
+		return docs
+	}).clone().catch(function(err){ console.log("err",err)});
+	
+	ctx.body = {
+		student
+	}
+})
 app.use(router.routes())
 // app.use(async ctx => {
 //   ctx.body = 'Hello World';
