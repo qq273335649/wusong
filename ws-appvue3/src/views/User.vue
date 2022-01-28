@@ -1,6 +1,7 @@
 <template>
   <div>{{ msg }}</div>
-  <button @click="addbook">记录</button>
+  <el-button type="primary" @click="addbook">记录</el-button>
+  {{JSON.stringify(ajson)}}
   <List />
 </template>
 
@@ -8,6 +9,7 @@
 import * as vue from "vue";
 import { Options, Vue } from "vue-class-component";
 import List from "@/components/userComp/List.vue";
+import ajson from "./a.json";
 @Options({
   components: {
     List,
@@ -26,6 +28,7 @@ import List from "@/components/userComp/List.vue";
     return {
       msg: "消息",
       book: 0,
+      ajson: ajson,
     };
   },
 })
