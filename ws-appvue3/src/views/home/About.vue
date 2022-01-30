@@ -69,7 +69,7 @@ import { Options, Vue } from "vue-class-component";
 
 @Options({
   components: {
-    TodoItem
+    TodoItem,
   },
   data() {
     return {
@@ -97,5 +97,5 @@ import { Options, Vue } from "vue-class-component";
     },
   },
 })
-export default class Home extends Vue {}
+export default class About extends Vue {}
 </script>

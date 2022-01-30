@@ -21,8 +21,7 @@ export default {
     Header,
   },
   data() {
-    return {
-    };
+    return {};
   },
   methods: {},
   beforeCreate() {
@@ -74,34 +73,10 @@ export default {
 </script>
 
 <style scoped lang="sass">
-.common-layout
-
-.el-footer
-  background-color: #b3c0d1
-  color: var(--el-text-color-primary)
-  text-align: center
-  line-height: 60px
-
-  &
-    line-height: 60px
-
-.el-aside
-  background-color: #d3dce6
-  color: var(--el-text-color-primary)
-  text-align: center
-  line-height: 200px
-
 .el-main
   background-color: #e9eef3
   color: var(--el-text-color-primary)
-
-body > .el-container
-  margin-bottom: 40px
-
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside
-  line-height: 260px
-
-.el-container:nth-child(7) .el-aside
-  line-height: 320px
+.el-header
+  box-shadow: 0px 2px 2px 0px #add0d6
+  margin-bottom: 4px
 </style>

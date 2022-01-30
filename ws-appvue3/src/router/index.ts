@@ -1,58 +1,77 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
-import Home from '../views/Home.vue'
-import User from '../views/User.vue'
-import Sort from '../views/Sort.vue'
-import Span from '../views/Span.vue'
-import Arch from '../views/Arch.vue'
-import Admin from '../views/Admin.vue'
 import BasicLayout from '../layout/BasicLayout.vue';
+import LoginLayout from '@/layout/LoginLayout.vue';
+import Home from '@/views/home/Home.vue'
+import User from '@/views/home/User.vue'
+import Sort from '@/views/home/Sort.vue'
+import Span from '@/views/home/Span.vue'
+import Arch from '@/views/home/Arch.vue'
+import Admin from '@/views/home/Admin.vue'
+import Login from '@/views/login/index.vue';
+
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    name: 'User',
+    name: 'Base',
+    redirect: '/home',
+  },
+  {
+    path: '/home',
+    name: 'Home',
     component: BasicLayout,
-    redirect:'/home',
     children: [
       {
-        path: '/user',
-        component: User,
-      },
-      {
         path: '/home',
-        name: 'Home',
+        name: 'Index',
         component: Home
       },
       {
-        path: '/sort',
+        path: '/home/user',
+        component: User,
+      },
+      {
+        path: '/home/sort',
         name: 'Sort',
         component: Sort
       },
       {
-        path: '/span',
+        path: '/home/span',
         name: 'Span',
         component: Span
       },
       {
-        path: '/archive',
+        path: '/home/archive',
         name: 'Archive',
         component: Arch
       },
       {
-        path: '/admin',
+        path: '/home/admin',
         name: 'Admin',
         component: Admin
       },
       {
-        path: '/about',
+        path: '/home/about',
         name: 'About',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+        component: () => import(/* webpackChunkName: "about" */ '@/views/home/About.vue')
       }
     ]
   },
+  {
+    path: '/user',
+    name: 'User',
+    component: LoginLayout,
+    redirect: '/user',
+    children: [
+      {
+        path: '/user',
+        component: Login,
+      },
+    ]
+  }
 ]
 
 const router = createRouter({
