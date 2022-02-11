@@ -1,4 +1,8 @@
 {
+	"name": "ws-server",
+	"scripts": {
+		"start": "nodemon app.js"
+	},
 	"dependencies": {
 		"koa": "^2.13.4",
 		"koa-router": "^10.1.1",

@@ -19,7 +19,7 @@
         </el-col>
         <el-col :span="4">
           <el-row class="mb-4" align="middle">
-            <el-button @click="toUser">登录</el-button>
+            <el-button @click="toLogin">登录</el-button>
             <el-button @click="toUser">注册</el-button>
           </el-row>
         </el-col>
@@ -27,27 +27,41 @@
       <el-row v-else>
         <el-col :span="20">
           <el-row class="logocont" align="middle">
-            <div class="logo">
+            <div class="logo" @click="toHome">
               <img alt="logo" src="@/assets/logo.png" />
             </div>
             <el-divider direction="vertical"></el-divider>
-            <div>登录</div>
+            <div>注册</div>
           </el-row>
         </el-col>
         <el-col :span="4"></el-col>
       </el-row>
     </LayoutSpace>
   </el-header>
+  <LoginDrawer ref="logindrawerRef" />
 </template>
 <script lang='ts'>
+import { ref } from "vue";
 import { Options, Vue } from "vue-class-component";
 import LayoutSpace from "@/components/layoutSpace/LayoutSpace.vue";
+import LoginDrawer from "@/layout/header/loginDrawer.vue";
 import router from "@/router";
 @Options({
+  setup() {
+    const logindrawerRef = ref(null);
+
+    return {
+      logindrawerRef,
+    };
+  },
   components: {
     LayoutSpace,
+    LoginDrawer,
   },
   props: {},
+  onMounted() {
+    console.log(this.$refs.logindrawerRef);
+  },
   data() {
     return {
       tabs: [
@@ -88,8 +102,14 @@ import router from "@/router";
     routerPath: () => router.currentRoute.value.path,
   },
   methods: {
+    toHome() {
+      router.go(-1);
+    },
     toUser() {
       router.push("/user");
+    },
+    toLogin() {
+      this.$refs.logindrawerRef.handleShow();
     },
   },
 })

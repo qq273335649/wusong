@@ -1,47 +1,76 @@
 <template>
   <div>
-    <h1>登录</h1>
+    <h1>注册</h1>
     <el-form
+      ref="ruleFormRef"
       label-position="left"
       label-width="100px"
       :model="formLabelAlign"
-      style="max-width: 460px"
+      style="max-width: 460px; margin: 0 auto"
+      :rules="rules"
     >
-      <el-form-item label="Name">
+      <el-form-item label="账号" prop="name">
         <el-input v-model="formLabelAlign.name"></el-input>
       </el-form-item>
-      <el-form-item label="Activity zone">
-        <el-input v-model="formLabelAlign.region"></el-input>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="formLabelAlign.password"></el-input>
       </el-form-item>
-      <el-form-item label="Activity form">
-        <el-input v-model="formLabelAlign.type"></el-input>
+      <el-form-item label="确认密码" prop="repassword">
+        <el-input
+          type="password"
+          v-model="formLabelAlign.repassword"
+        ></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="submitForm(ruleFormRef)"
+          >确认注册</el-button
+        >
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script lang='ts'>
-import { reactive } from "vue";
-import { Options, Vue } from "vue-class-component";
-const formLabelAlign = reactive({
-  name: "",
-  region: "",
-  type: "",
-});
+import { reactive, ref } from "vue";
+import { ElForm } from "element-plus";
 interface dataType {
   labelPosition: { pos: string };
-  formLabelAlign: any;
 }
-@Options({
+export default {
+  setup() {
+    type FormInstance = InstanceType<typeof ElForm>;
+    const ruleFormRef = ref<FormInstance>();
+    const formLabelAlign = reactive({
+      name: "",
+      password: "",
+      repassword: "",
+    });
+    const rules = reactive({
+      name: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+      password: [{ required: true, message: "请输入密码", trigger: "blur" }],
+      repassword: [{ required: true, message: "请确认密码", trigger: "blur" }],
+    });
+    const submitForm = (formEl: FormInstance | undefined) => {
+      if (!formEl) return;
+      formEl.validate((valid) => {
+        if (valid) {
+          console.log("submit!");
+          console.log(formLabelAlign);
+        } else {
+          console.log("error submit!");
+          return false;
+        }
+      });
+    };
+    return { rules, formLabelAlign, ruleFormRef, submitForm };
+  },
   props: {},
   data(): dataType {
     return {
       labelPosition: { pos: "left" },
-      formLabelAlign: formLabelAlign,
     };
   },
   components: {},
-})
-export default class Index extends Vue {}
+};
 </script>
 <style scoped lang='less'>
 </style>,
