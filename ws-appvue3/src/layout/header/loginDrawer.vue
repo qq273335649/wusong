@@ -31,10 +31,10 @@
   </div>
 </template>
 <script lang='ts'>
-import { reactive, ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
 import { ElForm } from "element-plus";
 
-export default {
+export default defineComponent({
   props: {},
   setup() {
     type FormInstance = InstanceType<typeof ElForm>;
@@ -102,7 +102,7 @@ export default {
         console.log(123);
     },
   },
-};
+});
 </script>
 <style scoped lang='less'>
 </style>
