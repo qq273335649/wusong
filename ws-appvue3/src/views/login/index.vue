@@ -30,14 +30,16 @@
   </div>
 </template>
 <script lang='ts'>
-import { reactive, ref } from "vue";
+import { defineComponent, getCurrentInstance, reactive, ref } from "vue";
 import { ElForm } from "element-plus";
 interface dataType {
   labelPosition: { pos: string };
 }
-export default {
+export default defineComponent({
   setup() {
     type FormInstance = InstanceType<typeof ElForm>;
+    const internalInstance = getCurrentInstance();
+    console.log("internalInstance", internalInstance);
     const ruleFormRef = ref<FormInstance>();
     const formLabelAlign = reactive({
       name: "",
@@ -55,6 +57,11 @@ export default {
         if (valid) {
           console.log("submit!");
           console.log(formLabelAlign);
+          internalInstance?.appContext.config.globalProperties.$http
+            .post("/api/users/add", { ...formLabelAlign })
+            .then((rel: any) => {
+              console.log(rel);
+            });
         } else {
           console.log("error submit!");
           return false;
@@ -70,7 +77,14 @@ export default {
     };
   },
   components: {},
-};
+  methods: {
+    toRegister: function (values: any) {
+      this.$http.post("/api/users/add").then((rel) => {
+        console.log(rel);
+      });
+    },
+  },
+});
 </script>
 <style scoped lang='less'>
 </style>,
