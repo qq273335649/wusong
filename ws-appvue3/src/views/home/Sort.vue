@@ -2,7 +2,7 @@
   <!-- <div>分类</div> -->
   <el-row :gutter="20">
     <el-col v-for="item in users" :key="item._id" :span="12">
-      <el-card :body-style="{ padding: '0px' }" class="userCard">
+      <el-card shadow="hover" :body-style="{ padding: '0px' }" class="userCard">
         <el-row>
           <el-col :span="8">
             <img
@@ -28,8 +28,7 @@
 </template>
 
 <script  lang="ts">
-import { defineComponent } from "vue-demi";
-import { ref } from "vue";
+import { ref, defineComponent } from "vue";
 
 export default defineComponent({
   setup() {
@@ -143,5 +142,4 @@ export default defineComponent({
   margin-bottom: 20px;
   padding: 20px 0;
 }
-
 </style>
