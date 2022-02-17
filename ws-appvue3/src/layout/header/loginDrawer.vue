@@ -5,6 +5,7 @@
       title="登录"
       direction="rtl"
       :before-close="handleClose"
+      size="20%"
     >
       <el-form
         label-position="top"
@@ -22,9 +23,9 @@
         </el-form-item>
       </el-form>
       <template #footer>
-        <div style="flex: auto">
+        <div class="foot">
           <el-button @click="cancelClick">取消</el-button>
-          <el-button type="primary" @click="confirmClick">确认登录</el-button>
+          <el-button type="primary" @click="confirmClick(ruleForm)">确认登录</el-button>
         </div>
       </template>
     </el-drawer>
@@ -33,11 +34,13 @@
 <script lang='ts'>
 import { defineComponent, reactive, ref } from "vue";
 import { ElForm } from "element-plus";
-
+interface data {
+  drawer: boolean;
+}
+type FormInstance = InstanceType<typeof ElForm>;
 export default defineComponent({
   props: {},
   setup() {
-    type FormInstance = InstanceType<typeof ElForm>;
     const formSize = ref("");
     const ruleFormRef = ref<FormInstance>();
     const ruleForm = reactive({
@@ -73,7 +76,7 @@ export default defineComponent({
     });
     return { formSize, ruleFormRef, ruleForm, rules };
   },
-  data() {
+  data(): data {
     return {
       drawer: false,
     };
@@ -84,7 +87,7 @@ export default defineComponent({
       this.drawer = true;
     },
     handleClose(done: () => void) {
-      //   this.drawer = false;
+      this.drawer = false;
       done();
       //   ElMessageBox.confirm("Are you sure you want to close this?")
       //     .then(() => {
@@ -95,14 +98,24 @@ export default defineComponent({
       //       // catch error
       //     });
     },
-    cancelClick(){
+    cancelClick() {
       this.drawer = false;
     },
-    confirmClick() {
-        console.log(123);
+    confirmClick(values: any) {
+      let form: any = this.$refs.ruleFormRef;
+      form?.validate(function (boolean: boolean, object: any) {
+        console.log(boolean);
+        console.log(object);
+        console.log(values);
+      });
     },
   },
 });
 </script>
 <style scoped lang='less'>
+.foot{
+  flex: auto;
+  display: flex;
+  justify-content: center;
+}
 </style>

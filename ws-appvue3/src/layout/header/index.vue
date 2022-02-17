@@ -1,43 +1,51 @@
 <template>
-  <el-header>
-    <LayoutSpace>
-      <el-row v-if="routerPath.indexOf('/home') !== -1">
-        <el-col :span="20">
-          <el-menu
-            :default-active="routerPath"
-            router
-            class="el-menu-demo"
-            mode="horizontal"
-          >
-            <el-menu-item
-              v-for="(item, index) in tabs"
-              :index="item.link"
-              v-bind:key="index"
-              >{{ item.label }}</el-menu-item
-            >
-          </el-menu>
-        </el-col>
-        <el-col :span="4">
-          <el-row class="mb-4" align="middle">
-            <el-button @click="toLogin">登录</el-button>
-            <el-button @click="toUser">注册</el-button>
-          </el-row>
-        </el-col>
-      </el-row>
-      <el-row v-else>
-        <el-col :span="20">
-          <el-row class="logocont" align="middle">
-            <div class="logo" @click="toHome">
-              <img alt="logo" src="@/assets/logo.png" />
-            </div>
-            <el-divider direction="vertical"></el-divider>
-            <div>注册</div>
-          </el-row>
-        </el-col>
-        <el-col :span="4"></el-col>
-      </el-row>
-    </LayoutSpace>
-  </el-header>
+  <el-affix :offset="0">
+    <el-header>
+      <LayoutSpace>
+        <el-row v-if="routerPath.indexOf('/home') !== -1">
+          <el-col :span="20">
+            <el-row class="logocont" align="middle">
+              <div class="logo" @click="toHome">
+                <img alt="logo" src="@/assets/logo.png" />
+              </div>
+              <el-divider direction="vertical"></el-divider>
+              <el-menu
+                :default-active="routerPath"
+                router
+                class="el-menu-demo"
+                mode="horizontal"
+              >
+                <el-menu-item
+                  v-for="(item, index) in tabs"
+                  :index="item.link"
+                  v-bind:key="index"
+                  >{{ item.label }}</el-menu-item
+                >
+              </el-menu>
+            </el-row>
+          </el-col>
+          <el-col :span="4">
+            <el-row class="mb-4" align="middle">
+              <el-button @click="toLogin">登录</el-button>
+              <el-button @click="toUser">注册</el-button>
+            </el-row>
+          </el-col>
+        </el-row>
+        <el-row v-else>
+          <el-col :span="20">
+            <el-row class="logocont" align="middle">
+              <div class="logo" @click="toHome">
+                <img alt="logo" src="@/assets/logo.png" />
+              </div>
+              <el-divider direction="vertical"></el-divider>
+              <div>注册</div>
+            </el-row>
+          </el-col>
+          <el-col :span="4"></el-col>
+        </el-row>
+      </LayoutSpace>
+    </el-header>
+  </el-affix>
   <LoginDrawer ref="logindrawerRef" />
 </template>
 <script lang='ts'>
@@ -102,7 +110,11 @@ import router from "@/router";
   },
   methods: {
     toHome() {
-      router.go(-1);
+      if (router.currentRoute.value.path.includes("/home")) {
+        router.go(0);
+      } else {
+        router.go(-1);
+      }
     },
     toUser() {
       router.push("/user");
@@ -115,6 +127,11 @@ import router from "@/router";
 export default class Header extends Vue {}
 </script>
 <style scoped lang="sass">
+.el-header
+  background: transparent
+  background-color: #fefefef2
+.el-menu-demo
+  flex: auto
 .el-menu--horizontal
   border-bottom: 0
 .el-menu-item
