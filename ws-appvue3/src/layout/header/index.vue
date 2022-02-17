@@ -2,12 +2,12 @@
   <el-affix :offset="0">
     <el-header>
       <LayoutSpace>
-        <el-row v-if="routerPath.indexOf('/home') !== -1">
+        <el-row v-if="!routerPath.includes('/user')">
           <el-col :span="20">
             <el-row class="logocont" align="middle">
-              <div class="logo" @click="toHome">
+              <a class="logo" @click="toHome">
                 <img alt="logo" src="@/assets/logo.png" />
-              </div>
+              </a>
               <el-divider direction="vertical"></el-divider>
               <el-menu
                 :default-active="routerPath"
@@ -16,7 +16,7 @@
                 mode="horizontal"
               >
                 <el-menu-item
-                  v-for="(item, index) in tabs"
+                  v-for="(item, index) in data.tabs"
                   :index="item.link"
                   v-bind:key="index"
                   >{{ item.label }}</el-menu-item
@@ -49,16 +49,82 @@
   <LoginDrawer ref="logindrawerRef" />
 </template>
 <script lang='ts'>
-import { ref } from "vue";
-import { Options, Vue } from "vue-class-component";
+import { defineComponent, ref } from "vue";
 import LayoutSpace from "@/components/layoutSpace/LayoutSpace.vue";
 import LoginDrawer from "@/layout/header/loginDrawer.vue";
 import router from "@/router";
-@Options({
+// type headerPath = "/home" | "/user" | "/blogger" | ""; //需要展示不同header的标识
+interface tabType {
+  label: string;
+  link: string;
+  icon: string;
+}
+function headerState() {
+  const { matched, params } = router.currentRoute.value;
+  const name = params.name;
+  let map = new Map();
+  map.set("/home", [
+    {
+      label: "首页",
+      link: "/home",
+      icon: "calendar",
+    },
+    {
+      label: "关于",
+      link: "/home/about",
+      icon: "calendar",
+    },
+  ]);
+  map.set("/user", [
+    {
+      label: "注册",
+      link: "#",
+      icon: "calendar",
+    },
+  ]);
+  map.set("/blogger", [
+    {
+      label: "首页",
+      link: `/blogger/${name}`,
+      icon: "calendar",
+    },
+    {
+      label: "分类",
+      link: `/blogger/${name}/sort`,
+      icon: "calendar",
+    },
+    {
+      label: "标签",
+      link: `/blogger/${name}/span`,
+      icon: "calendar",
+    },
+    {
+      label: "归档",
+      link: `/blogger/${name}/archive`,
+      icon: "calendar",
+    },
+    {
+      label: "管理",
+      link: `/blogger/${name}/admin`,
+      icon: "calendar",
+    },
+    {
+      label: "关于",
+      link: `/blogger/${name}/about`,
+      icon: "calendar",
+    },
+  ]);
+  const tabs: tabType[] = map.get(matched[0].path); //根据状态来切换
+  let data = { tabs };
+  return data;
+}
+export default defineComponent({
   setup() {
     const logindrawerRef = ref(null);
+    let data = headerState();
     return {
       logindrawerRef,
+      data,
     };
   },
   components: {
@@ -69,62 +135,36 @@ import router from "@/router";
   onMounted() {
     console.log(this.$refs.logindrawerRef);
   },
-  data() {
-    return {
-      tabs: [
-        {
-          label: "首页",
-          link: "/home",
-          icon: "calendar",
-        },
-        {
-          label: "分类",
-          link: "/home/sort",
-          icon: "calendar",
-        },
-        {
-          label: "标签",
-          link: "/home/span",
-          icon: "calendar",
-        },
-        {
-          label: "归档",
-          link: "/home/archive",
-          icon: "calendar",
-        },
-        {
-          label: "管理",
-          link: "/home/admin",
-          icon: "calendar",
-        },
-        {
-          label: "关于",
-          link: "/home/about",
-          icon: "calendar",
-        },
-      ],
-    };
-  },
   computed: {
     routerPath: () => router.currentRoute.value.path,
   },
   methods: {
     toHome() {
-      if (router.currentRoute.value.path.includes("/home")) {
-        router.go(0);
+      const { path } = router.currentRoute.value;
+      if (path.includes("/home")) {
+        if (path === "/home") {
+          router.go(0);
+        } else {
+          router.push("/home");
+        }
       } else {
-        router.go(-1);
+        const a = document.createElement("a");
+        a.href = "/home";
+        a.target = "/home";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
       }
     },
     toUser() {
       router.push("/user");
     },
     toLogin() {
-      this.$refs.logindrawerRef.handleShow();
+      const logindrawerRef: any = this.$refs.logindrawerRef;
+      logindrawerRef.handleShow();
     },
   },
-})
-export default class Header extends Vue {}
+});
 </script>
 <style scoped lang="sass">
 .el-header
