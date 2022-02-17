@@ -2,13 +2,13 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import BasicLayout from '../layout/BasicLayout.vue';
 import LoginLayout from '@/layout/LoginLayout.vue';
 import Home from '@/views/home/Home.vue'
+import Blogger from '@/views/home/blogger/index.vue'
 import User from '@/views/home/User.vue'
 import Sort from '@/views/home/Sort.vue'
 import Span from '@/views/home/Span.vue'
 import Arch from '@/views/home/Arch.vue'
 import Admin from '@/views/home/Admin.vue'
 import Login from '@/views/login/index.vue';
-
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -27,31 +27,52 @@ const routes: Array<RouteRecordRaw> = [
         component: Home
       },
       {
+        path: '/home/about',
+        name: 'AdminAbout',
+        // route level code-splitting
+        // this generates a separate chunk (about.[hash].js) for this route
+        // which is lazy-loaded when the route is visited.
+        component: () => import(/* webpackChunkName: "about" */ '@/views/home/About.vue')
+      },
+      {
         path: '/home/user',
         component: User,
+      }
+    ]
+  },
+  {
+    path: '/blogger',
+    name: 'Blogger',
+    component: BasicLayout,
+    redirect: '/home',
+    children: [
+      {
+        path: '/blogger/:name',
+        name: 'Blogger',
+        component: Blogger,
       },
       {
-        path: '/home/sort',
+        path: '/blogger/:name/sort',
         name: 'Sort',
-        component: Sort
+        component: Sort,
       },
       {
-        path: '/home/span',
+        path: '/blogger/:name/span',
         name: 'Span',
-        component: Span
+        component: Span,
       },
       {
-        path: '/home/archive',
+        path: '/blogger/:name/archive',
         name: 'Archive',
-        component: Arch
+        component: Arch,
       },
       {
-        path: '/home/admin',
+        path: '/blogger/:name/admin',
         name: 'Admin',
         component: Admin
       },
       {
-        path: '/home/about',
+        path: '/blogger/:name/about',
         name: 'About',
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route

@@ -8,8 +8,17 @@ export default class LayoutSpace extends Vue {}
 </script>
 
 <style lang="less" scoped>
+// @media screen and (max-width: 1200px) {
+//   .space {
+//     width: 100%;
+//   }
+// }
+@media only screen and (min-width: 1200px) {
+  .space {
+    width: 1200px;
+  }
+}
 .space {
-  width: 1200px;
   margin: 0 auto;
 }
 </style>
