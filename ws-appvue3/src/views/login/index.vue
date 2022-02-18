@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="register">
     <h1>注册</h1>
     <el-form
       ref="ruleFormRef"
@@ -87,4 +87,11 @@ export default defineComponent({
 });
 </script>
 <style scoped lang='less'>
+.register {
+  h1 {
+    margin: 0 auto;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+}
 </style>,
