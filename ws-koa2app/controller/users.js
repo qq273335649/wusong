@@ -1,25 +1,18 @@
+/*
+ * @Author: your name
+ * @Date: 2022-02-18 11:16:50
+ * @LastEditTime: 2022-02-18 14:11:45
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \vue\ws-koa2app\controller\users.js
+ */
 const { User } = require('../models/users');
-
+const crudUtil = require('../controller/crudUtil');
 const userAdd = async function (ctx, next) {
     console.log(ctx.request.body);
     const { name, password, repassword } = ctx.request.body;
     if (password === repassword) {
-        await User.create({ name, password }).then((rel) => {
-            console.log(rel);
-            ctx.body = {
-                code: 200,
-                result: rel,
-                success: true
-            }
-        }).catch((err) => {
-            console.log(err);
-            ctx.body = {
-                code: 500,
-                result: err,
-                success: false,
-                msg: '添加失败',
-            }
-        })
+        await crudUtil.add(ctx, User, { name, password })
     } else {
         ctx.body = {
             code: 200,
@@ -33,25 +26,14 @@ const userDel = async function (ctx) {
     console.log(ctx.request.body);
     ctx.body = '删除';
 }
-const userEdit = async () => {
+const userEdit = async (ctx) => {
     const { } = ctx.request.body
+    await crudUtil.update(ctx, User, {});
     ctx.body = '修改'
 }
 const userFind = async (ctx) => {
     const { } = ctx.request.query
-    await User.find().then((rel) => {
-        console.log(rel);
-        ctx.body = {
-            code: 200,
-            list: rel
-        }
-    }).catch((err) => {
-        console.log(err);
-        ctx.body = {
-            code: 500,
-            err
-        }
-    })
+    await crudUtil.find(ctx, User)
 }
 const userFindOne = async (ctx) => {
     // await User.findOne({_id:ctx.params.id});
