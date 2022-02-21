@@ -25,7 +25,13 @@
       <template #footer>
         <div class="foot">
           <el-button @click="cancelClick">取消</el-button>
-          <el-button type="primary" @click="confirmClick(ruleForm)"
+          <el-button
+            type="primary"
+            :loading="loginloading"
+            @click="
+              setLoading(true);
+              confirmClick(ruleForm);
+            "
             >确认登录</el-button
           >
         </div>
@@ -34,18 +40,21 @@
   </div>
 </template>
 <script lang='ts'>
-import { defineComponent, reactive, ref, watchEffect } from "vue";
+import { defineComponent, reactive, ref, getCurrentInstance } from "vue";
 import { ElForm } from "element-plus";
 import { postLogin } from "@/api/authApi";
+import { setToken } from "@/utils";
 import _ from "lodash";
 interface data {
   drawer: boolean;
+  loginloading: boolean;
 }
 type FormInstance = InstanceType<typeof ElForm>;
 export default defineComponent({
   props: {},
   setup() {
     const formSize = ref("");
+    const Instance: any = getCurrentInstance();
     const ruleFormRef = ref<FormInstance>();
     const ruleForm = reactive({
       name: "",
@@ -78,20 +87,28 @@ export default defineComponent({
         },
       ],
     });
+    // 防抖
+    const confirmClick = _.debounce(function (values: any) {
+      // ....
+      console.log("防抖");
+      ruleFormRef.value?.validate(async (boolean, object) => {
+        if (boolean) {
+          const res = await postLogin({ ...values });
+          let user = res.data.user;
+          if (user) {
+            setToken(user.token);
+          }
+        } else {
+          console.log(object);
+        }
+        Instance.proxy.setLoading(false);
+      });
+    }, 2000);
     // 节流
-    const debounceClick = _.debounce(function () {
+    const throttleClick = _.throttle(function () {
       // ....
       console.log("节流");
     }, 2000);
-    // 防抖
-    const confirmClick = _.throttle(function () {
-      // ....
-      console.log("防抖");
-    }, 2000);
-    watchEffect(() => {
-      /* 副作用的内容 */
-      // confirmClick.cancel();
-    });
     return {
       formSize,
       ruleFormRef,
@@ -104,6 +121,7 @@ export default defineComponent({
   data(): data {
     return {
       drawer: false,
+      loginloading: false,
     };
   },
   components: {},
@@ -126,22 +144,9 @@ export default defineComponent({
     cancelClick() {
       this.drawer = false;
     },
-    // confirmClick() {
-    //   console.log("防抖");
-    // },
-    // confirmClick(values: any) {
-    //   console.log(values);
-    //   _.debounce(() => {
-    //     let form: any = this.$refs.ruleFormRef;
-    //     form?.validate(async function (boolean: boolean, object: any) {
-    //       if (boolean) {
-    //         await postLogin({ ...values });
-    //       } else {
-    //         console.log(object);
-    //       }
-    //     });
-    //   }, 5000)();
-    // },
+    setLoading(bol: boolean) {
+      this.loginloading = bol;
+    },
   },
 });
 </script>

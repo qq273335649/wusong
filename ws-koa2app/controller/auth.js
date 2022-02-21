@@ -9,6 +9,7 @@
 
 const { User } = require('../models/users');
 const crudUtil = require('../controller/crudUtil');
+const { addtoken } = require('./token/addtoken');
 
 const authLogin = async function (ctx, next) {
     console.log('登录');
@@ -43,9 +44,10 @@ const authLogin = async function (ctx, next) {
         return;
     }
     //添加token
+    const token = addtoken({ name, password });
     ctx.body = {
         code: 200,
-        user,
+        user: { ...user, token },
         success: true,
         msg: '登录成功',
     }

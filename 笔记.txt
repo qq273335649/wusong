@@ -1,2 +1,6 @@
 博客之家：https://www.vblogs.cc/
 
+1.后端拦截器接收token并验证
+2.前端拦截器发送token并验证是否有token
+3.vue储存user用户信息
+

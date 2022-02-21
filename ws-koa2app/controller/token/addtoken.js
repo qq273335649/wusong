@@ -14,9 +14,12 @@ const serect = 'token';  //密钥，不能丢
  * @param {*} userinfo
  * @return {*}
  */
-module.exports = (userinfo) => { //创建token并导出
-  const token = jwt.sign({
-    ...userinfo,
-  }, serect, {expiresIn: '24h'});
-  return token;
-};
+module.exports = {
+  addtoken: (userinfo) => { //创建token并导出
+    const token = jwt.sign({
+      ...userinfo,
+    }, serect, { expiresIn: '24h' });
+    return token;
+  },
+  serect
+}
