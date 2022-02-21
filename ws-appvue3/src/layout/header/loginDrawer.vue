@@ -25,15 +25,19 @@
       <template #footer>
         <div class="foot">
           <el-button @click="cancelClick">取消</el-button>
-          <el-button type="primary" @click="confirmClick(ruleForm)">确认登录</el-button>
+          <el-button type="primary" @click="confirmClick(ruleForm)"
+            >确认登录</el-button
+          >
         </div>
       </template>
     </el-drawer>
   </div>
 </template>
 <script lang='ts'>
-import { defineComponent, reactive, ref } from "vue";
+import { defineComponent, reactive, ref, watchEffect } from "vue";
 import { ElForm } from "element-plus";
+import { postLogin } from "@/api/authApi";
+import _ from "lodash";
 interface data {
   drawer: boolean;
 }
@@ -74,7 +78,28 @@ export default defineComponent({
         },
       ],
     });
-    return { formSize, ruleFormRef, ruleForm, rules };
+    // 节流
+    const debounceClick = _.debounce(function () {
+      // ....
+      console.log("节流");
+    }, 2000);
+    // 防抖
+    const confirmClick = _.throttle(function () {
+      // ....
+      console.log("防抖");
+    }, 2000);
+    watchEffect(() => {
+      /* 副作用的内容 */
+      // confirmClick.cancel();
+    });
+    return {
+      formSize,
+      ruleFormRef,
+      ruleForm,
+      rules,
+      confirmClick,
+      // throttleClick,
+    };
   },
   data(): data {
     return {
@@ -101,19 +126,27 @@ export default defineComponent({
     cancelClick() {
       this.drawer = false;
     },
-    confirmClick(values: any) {
-      let form: any = this.$refs.ruleFormRef;
-      form?.validate(function (boolean: boolean, object: any) {
-        console.log(boolean);
-        console.log(object);
-        console.log(values);
-      });
-    },
+    // confirmClick() {
+    //   console.log("防抖");
+    // },
+    // confirmClick(values: any) {
+    //   console.log(values);
+    //   _.debounce(() => {
+    //     let form: any = this.$refs.ruleFormRef;
+    //     form?.validate(async function (boolean: boolean, object: any) {
+    //       if (boolean) {
+    //         await postLogin({ ...values });
+    //       } else {
+    //         console.log(object);
+    //       }
+    //     });
+    //   }, 5000)();
+    // },
   },
 });
 </script>
 <style scoped lang='less'>
-.foot{
+.foot {
   flex: auto;
   display: flex;
   justify-content: center;

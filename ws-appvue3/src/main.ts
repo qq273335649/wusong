@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-12-22 19:30:00
+ * @LastEditTime: 2022-02-21 11:05:12
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \vue\ws-appvue3\src\main.ts
+ */
 import { createApp } from 'vue'
 import 'element-plus/dist/index.css'
 // import './styles/element/index.scss'
@@ -8,9 +16,13 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import store from './store'
-import axios from 'axios'
 import VueAxios from 'vue-axios'
-
-createApp(App).use(store).use(router).use(ElementPlus, {
-    locale: zhCn,
-}).use(VueAxios, axios).mount('#app');
+import { instance } from './request'
+createApp(App)
+    .use(store)
+    .use(router)
+    .use(ElementPlus, {
+        locale: zhCn,
+    })
+    .use(VueAxios, instance)
+    .mount('#app');
