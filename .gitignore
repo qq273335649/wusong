@@ -1,7 +1,5 @@
 .DS_Store
 node_modules
-/ws-app/node_modules
-/ws-server/node_modules
 
 # local env files
 .env.local
