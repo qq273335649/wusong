@@ -9,6 +9,7 @@ import Span from '@/views/home/Span.vue'
 import Arch from '@/views/home/Arch.vue'
 import Admin from '@/views/home/Admin.vue'
 import Login from '@/views/login/index.vue';
+import { adminrouters } from './admin';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -81,6 +82,7 @@ const routes: Array<RouteRecordRaw> = [
       }
     ]
   },
+  ...adminrouters,
   {
     path: '/user',
     name: 'User',

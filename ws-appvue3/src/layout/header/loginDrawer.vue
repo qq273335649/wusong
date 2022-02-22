@@ -53,6 +53,7 @@ import { postLogin } from "@/api/authApi";
 import { setToken } from "@/utils";
 import _ from "lodash";
 import { mapState, useStore } from "vuex";
+import router from "@/router";
 interface data {
   drawer: boolean;
   loginloading: boolean;
@@ -107,6 +108,7 @@ export default defineComponent({
           if (user) {
             setToken(user.token);
             store.commit("incToken", user.token);
+            Instance.proxy.cancelClick();
           }
         } else {
           console.log(object);

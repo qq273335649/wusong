@@ -32,7 +32,7 @@
           </el-col>
         </el-row>
         <el-row v-else>
-          <el-col :span="20">
+          <el-col :span="20" v-if="!token">
             <el-row class="logocont" align="middle">
               <div class="logo" @click="toHome">
                 <img alt="logo" src="@/assets/logo.png" />
@@ -53,6 +53,7 @@ import { defineComponent, ref } from "vue";
 import LayoutSpace from "@/components/layoutSpace/LayoutSpace.vue";
 import LoginDrawer from "@/layout/header/loginDrawer.vue";
 import router from "@/router";
+import { mapState, useStore } from "vuex";
 // type headerPath = "/home" | "/user" | "/blogger" | ""; //需要展示不同header的标识
 interface tabType {
   label: string;
@@ -137,6 +138,7 @@ export default defineComponent({
   },
   computed: {
     routerPath: () => router.currentRoute.value.path,
+    ...mapState({ token: "token" }),
   },
   methods: {
     toHome() {

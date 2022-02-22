@@ -1,10 +1,10 @@
 <!--
  * @Author: your name
- * @Date: 2022-01-28 11:16:26
- * @LastEditTime: 2022-02-22 16:55:53
- * @LastEditors: your name
+ * @Date: 2022-02-22 16:31:39
+ * @LastEditTime: 2022-02-22 16:55:20
+ * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
- * @FilePath: \ws-appvue3\src\layout\BasicLayout.vue
+ * @FilePath: \ws-appvue3\src\layout\AdminLayout.vue
 -->
 <template>
   <el-container>
@@ -23,13 +23,11 @@
 <script lang="ts">
 import * as Icon from "@element-plus/icons-vue";
 import LayoutSpace from "@/components/layoutSpace/LayoutSpace.vue";
-import Header from "./header/index.vue";
 import "./index.sass";
 export default {
   components: {
     ...Icon,
     LayoutSpace,
-    Header,
   },
   data() {
     return {};
@@ -82,5 +80,6 @@ export default {
   },
 };
 </script>
+
 <style scoped lang="less">
 </style>
