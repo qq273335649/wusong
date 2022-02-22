@@ -25,14 +25,18 @@
             </el-row>
           </el-col>
           <el-col :span="4">
-            <el-row class="mb-4" align="middle">
+            <el-row class="mb-4" align="middle" v-if="!token">
               <el-button @click="toLogin">登录</el-button>
               <el-button @click="toUser">注册</el-button>
+            </el-row>
+            <el-row class="mb-4" align="middle" v-else>
+              <el-button @click="toLogin">登录1</el-button>
+              <el-button @click="toUser">注册1</el-button>
             </el-row>
           </el-col>
         </el-row>
         <el-row v-else>
-          <el-col :span="20" v-if="!token">
+          <el-col :span="20">
             <el-row class="logocont" align="middle">
               <div class="logo" @click="toHome">
                 <img alt="logo" src="@/assets/logo.png" />
