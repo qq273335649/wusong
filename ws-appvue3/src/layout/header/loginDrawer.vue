@@ -7,6 +7,7 @@
       :before-close="handleClose"
       size="20%"
     >
+      <div>{{ token }}</div>
       <el-form
         label-position="top"
         label-width="100px"
@@ -40,11 +41,18 @@
   </div>
 </template>
 <script lang='ts'>
-import { defineComponent, reactive, ref, getCurrentInstance } from "vue";
+import {
+  defineComponent,
+  reactive,
+  ref,
+  getCurrentInstance,
+  onUnmounted,
+} from "vue";
 import { ElForm } from "element-plus";
 import { postLogin } from "@/api/authApi";
 import { setToken } from "@/utils";
 import _ from "lodash";
+import { mapState, useStore } from "vuex";
 interface data {
   drawer: boolean;
   loginloading: boolean;
@@ -53,12 +61,13 @@ type FormInstance = InstanceType<typeof ElForm>;
 export default defineComponent({
   props: {},
   setup() {
+    const store = useStore();
     const formSize = ref("");
     const Instance: any = getCurrentInstance();
     const ruleFormRef = ref<FormInstance>();
     const ruleForm = reactive({
-      name: "",
-      password: "",
+      name: "zhangsan",
+      password: "123456",
     });
     const validatePass = (rule: any, value: any, callback: any) => {
       if (value === "") {
@@ -97,6 +106,7 @@ export default defineComponent({
           let user = res.data.user;
           if (user) {
             setToken(user.token);
+            store.commit("incToken", user.token);
           }
         } else {
           console.log(object);
@@ -123,6 +133,11 @@ export default defineComponent({
       drawer: false,
       loginloading: false,
     };
+  },
+  computed: {
+    ...mapState({
+      token: "token",
+    }),
   },
   components: {},
   methods: {
