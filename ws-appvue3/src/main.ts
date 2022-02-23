@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-22 19:30:00
- * @LastEditTime: 2022-02-22 11:21:12
+ * @LastEditTime: 2022-02-23 10:11:05
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue\ws-appvue3\src\main.ts
@@ -18,6 +18,11 @@ import router from './router'
 import store from './store'
 import VueAxios from 'vue-axios'
 import { instance } from './request'
+
+router.beforeEach((to, from, next) => {
+    next();
+})
+
 createApp(App)
     .use(store)
     .use(router)
