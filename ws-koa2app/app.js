@@ -7,21 +7,20 @@
  * @FilePath: \ws-koa2app\app.js
  */
 const Koa = require('koa')
-const app = new Koa()
 const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
 const bodyparser = require('koa-bodyparser')
 const logger = require('koa-logger')
-
+const koajwt = require('koa-jwt')
 const MongooseConnect = require('./db');
-// const MongooseConnect = require('./db/index');
-MongooseConnect();
 
 const index = require('./routes/index')
 const auth = require('./routes/auth')
 const users = require('./routes/users')
-
+const { secret } = require('./controller/token/addtoken')
+const app = new Koa()
+MongooseConnect();
 // error handler
 onerror(app)
 
@@ -44,7 +43,9 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
-
+app.use(koajwt({
+  secret,
+}).unless({path:[/\/users/,/\/login/]}))
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())

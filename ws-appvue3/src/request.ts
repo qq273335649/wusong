@@ -9,11 +9,15 @@
 import axios from 'axios';
 import { ElMessage, ElNotification } from 'element-plus';
 import { h } from 'vue';
+import { getToken } from './utils';
 
 const instance = axios.create({
     baseURL: '/',
     timeout: 1000,
-    headers: { 'X-Custom-Header': 'foobar' }
+    headers: {
+        'X-Custom-Header': 'foobar',
+        'Authorization': 'Bearer ' + getToken(),//添加token权限标识
+    }
 });
 
 // 添加请求拦截器
@@ -28,6 +32,7 @@ instance.interceptors.request.use(function (config) {
 instance.interceptors.response.use(function (response) {
     console.log(response);
     console.log("response");
+    //添加401权限验证
     // 对响应数据做点什么
     // 在发送请求之前做些什么
     if (response.data.success === false) {

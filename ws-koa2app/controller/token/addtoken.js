@@ -8,7 +8,7 @@
  */
 //添加token
 const jwt = require('jsonwebtoken');
-const serect = 'token';  //密钥，不能丢
+const secret = 'WS_TOKEN';  //密钥，不能丢
 /**
  * @description: 
  * @param {*} userinfo
@@ -18,8 +18,8 @@ module.exports = {
   addtoken: (userinfo) => { //创建token并导出
     const token = jwt.sign({
       ...userinfo,
-    }, serect, { expiresIn: '24h' });
+    }, secret, { expiresIn: '24h' });
     return token;
   },
-  serect
+  secret
 }
