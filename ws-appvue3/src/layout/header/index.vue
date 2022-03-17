@@ -3,6 +3,7 @@
     <el-header>
       <LayoutSpace>
         <el-row v-if="!routerPath.includes('/user')">
+          <!--注册相关-->
           <el-col :span="20">
             <el-row class="logocont" align="middle">
               <a class="logo" @click="toHome">
@@ -24,14 +25,17 @@
               </el-menu>
             </el-row>
           </el-col>
+          <!--登录按钮显示相关-->
           <el-col :span="4">
-            <el-row class="mb-4" align="middle" v-if="!token">
+            <el-row class="mb-4" align="middle" justify="end" v-if="!token">
               <el-button @click="toLogin">登录</el-button>
               <el-button @click="toUser">注册</el-button>
             </el-row>
-            <el-row class="mb-4" align="middle" v-else>
-              <el-button @click="toLogin">登录1</el-button>
-              <el-button @click="toUser">注册1</el-button>
+            <el-row class="mb-4" align="middle" justify="end" v-else>
+              <el-space>
+                <el-link @click="toAdmin">去后台</el-link>
+                <UserPopover />
+              </el-space>
             </el-row>
           </el-col>
         </el-row>
@@ -56,6 +60,7 @@
 import { defineComponent, ref } from "vue";
 import LayoutSpace from "@/components/layoutSpace/LayoutSpace.vue";
 import LoginDrawer from "@/layout/header/loginDrawer.vue";
+import UserPopover from "@/layout/header/userPopover.vue";
 import router from "@/router";
 import { mapState, useStore } from "vuex";
 // type headerPath = "/home" | "/user" | "/blogger" | ""; //需要展示不同header的标识
@@ -110,7 +115,7 @@ function headerState() {
     },
     {
       label: "管理",
-      link: `/blogger/${name}/admin`,
+      link: `/admin`,
       icon: "calendar",
     },
     {
@@ -127,6 +132,7 @@ export default defineComponent({
   setup() {
     const logindrawerRef = ref(null);
     let data = headerState();
+
     return {
       logindrawerRef,
       data,
@@ -135,6 +141,7 @@ export default defineComponent({
   components: {
     LayoutSpace,
     LoginDrawer,
+    UserPopover,
   },
   props: {},
   onMounted() {
@@ -164,6 +171,9 @@ export default defineComponent({
     },
     toUser() {
       router.push("/user");
+    },
+    toAdmin() {
+      router.push("/admin");
     },
     toLogin() {
       const logindrawerRef: any = this.$refs.logindrawerRef;

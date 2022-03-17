@@ -15,6 +15,9 @@ const adminrouters: Array<RouteRecordRaw> = [
         name: 'Admin',
         component: AdminLayout,
         redirect: '/admin/sort',
+        meta: {
+            requireAuth: true,//需要登录权限
+        },
         children: [
             {
                 path: '/admin/sort',

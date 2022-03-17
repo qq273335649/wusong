@@ -33,6 +33,7 @@
 </template>
 <script lang='ts'>
 import router from "@/router";
+import { toPageOpen } from "@/utils";
 import { ref, defineComponent } from "vue";
 export default defineComponent({
   setup() {
@@ -53,10 +54,7 @@ export default defineComponent({
   },
   methods: {
     toBlod(name: string) {
-      let routeUrl = this.$router.resolve({
-        path: `/blogger/${name}`,
-      });
-      window.open(routeUrl.href, "_blank");
+      toPageOpen(`/blogger/${name}`);
     },
   },
   components: {},

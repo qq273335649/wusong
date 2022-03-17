@@ -18,9 +18,23 @@ import router from './router'
 import store from './store'
 import VueAxios from 'vue-axios'
 import { instance } from './request'
+import { getToken } from './utils'
 
 router.beforeEach((to, from, next) => {
-    next();
+    const isLoginToken = getToken();//获取缓存中token
+    if (isLoginToken) {
+        next();
+        store.commit("incToken", isLoginToken);//缓存中拿到的token赋值到store中
+    } else {
+        if (to.path !== '/home') {
+            if (to.meta.requireAuth) {//需要登录权限
+                next('/home');//返回主页
+            }
+        }
+        //清除store中token
+        store.commit('clearToken');
+        next();
+    }
 })
 
 createApp(App)
