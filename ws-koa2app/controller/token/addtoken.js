@@ -18,7 +18,11 @@ module.exports = {
   addtoken: (userinfo) => { //创建token并导出
     const token = jwt.sign({
       ...userinfo,
-    }, secret, { expiresIn: '24h' });
+    }, secret,
+      {
+        expiresIn: '168h'
+        // expiresIn: '24h'
+      });
     return token;
   },
   secret

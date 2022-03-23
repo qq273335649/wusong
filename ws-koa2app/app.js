@@ -43,9 +43,29 @@ app.use(async (ctx, next) => {
   const ms = new Date() - start
   console.log(`${ctx.method} ${ctx.url} - ${ms}ms`)
 })
+// // 错误处理
+// app.use(async (ctx, next) => {
+//   return next().catch((err) => {
+//     if (err.status === 401) {
+//       ctx.status = 401;
+//       ctx.body = {
+//         code: 401,
+//         msg: 'Protected resource, use Authorization header to get access\n'
+//       }
+//     } else {
+//       throw err;
+//     }
+//   })
+// })
 app.use(koajwt({
   secret,
-}).unless({path:[/\/users/,/\/login/]}))
+})
+  .unless({
+    path: [
+      /\/users/,
+      /\/login/
+    ]
+  }))
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())

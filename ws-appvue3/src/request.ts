@@ -12,6 +12,7 @@ import message from 'element-plus/es/components/message';
 import { h } from 'vue';
 import _ from 'lodash'
 import store from './store';
+import { getToken } from './utils';
 // 异常退出
 const logout = _.throttle(
     () => {
@@ -28,7 +29,10 @@ const logout = _.throttle(
 const instance = axios.create({
     baseURL: '/',
     timeout: 1000,
-    headers: { 'X-Custom-Header': 'foobar' }
+    headers: {
+        'X-Custom-Header': 'foobar',
+        'Authorization': "Bearer " + getToken(),//jwt默认验证token传递
+    }
 });
 
 // 添加请求拦截器
@@ -42,14 +46,8 @@ instance.interceptors.request.use(function (config) {
 // 添加响应拦截器
 instance.interceptors.response.use(function (response) {
     console.log(response);
-    console.log("response", '这里处理token是否过期');
     // 对响应数据做点什么
     // 在发送请求之前做些什么
-    const { status } = response;
-    if (status === 401) {//没有登录权限直接退登
-        logout();
-        return response;
-    }
     if (response.data.success === false) {
         ElMessage({
             showClose: true,
@@ -65,6 +63,14 @@ instance.interceptors.response.use(function (response) {
     }
     return response;
 }, function (error) {
+    console.error(error, 'error');
+    if (error.response) {
+        switch (error.response.status) {
+            case 401:
+                // 返回 401 清除token信息并跳转到登录页面
+                logout();
+        }
+    }
     // 对响应错误做点什么
     return Promise.reject(error);
 });

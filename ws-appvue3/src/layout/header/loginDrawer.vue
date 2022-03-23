@@ -105,8 +105,10 @@ export default defineComponent({
           const res = await postLogin({ ...values });
           let user = res.data.user;
           if (user) {
+            //获取完登录信息后操作
             store.commit("incToken", user.token);
             Instance.proxy.cancelClick();
+            location.reload(); //登陆后重新刷新页面
           }
         } else {
           console.log(object);
