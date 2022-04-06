@@ -10,15 +10,16 @@
       :rules="rules"
     >
       <el-form-item label="账号" prop="name">
-        <el-input v-model="formLabelAlign.name"></el-input>
+        <el-input v-model="formLabelAlign.name" placeholder="请输入账号" ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="formLabelAlign.password"></el-input>
+        <el-input type="password" v-model="formLabelAlign.password" placeholder="请输入密码"></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="repassword">
         <el-input
           type="password"
           v-model="formLabelAlign.repassword"
+          placeholder="请确认密码"
         ></el-input>
       </el-form-item>
       <el-form-item>
@@ -61,6 +62,7 @@ export default defineComponent({
             .post("/api/users/add", { ...formLabelAlign })
             .then((rel: any) => {
               console.log(rel);
+              
             });
         } else {
           console.log("error submit!");
