@@ -10,7 +10,9 @@ const Koa = require('koa')
 const views = require('koa-views')
 const json = require('koa-json')
 const onerror = require('koa-onerror')
-const bodyparser = require('koa-bodyparser')
+const jsonerror = require('koa-json-error');
+const bodyparser = require('koa-bodyparser');
+const parameter = require('koa-parameter');
 const logger = require('koa-logger')
 const koajwt = require('koa-jwt')
 const MongooseConnect = require('./db');
@@ -23,11 +25,12 @@ const app = new Koa()
 MongooseConnect();
 // error handler
 onerror(app)
-
 // middlewares
+app.use(jsonerror());
 app.use(bodyparser({
   enableTypes: ['json', 'form', 'text']
 }))
+app.use(parameter(app));
 app.use(json())
 app.use(logger())
 app.use(require('koa-static')(__dirname + '/public'))

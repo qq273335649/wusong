@@ -8,7 +8,7 @@
 -->
 <template>
   <el-container>
-    <Header />
+    <div>后台头部</div>
     <el-main>
       <LayoutSpace>
         <router-view></router-view>
