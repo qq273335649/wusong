@@ -53,6 +53,41 @@ const authLogin = async function (ctx, next) {
     }
 }
 
+const authRegister = async function (ctx, next) {
+    const { name, password, repassword } = ctx.request.body;
+    if (password === repassword) {// TODO验证
+        let user;
+        // TODO去重
+        await User.create({ name, password }).then((rel) => {
+            user = rel
+        }).catch((err) => {
+            console.log(err);
+            ctx.body = {
+                code: 500,
+                result: err,
+                success: false,
+                msg: '注册失败',
+            }
+        })
+        //添加token
+        const token = addtoken({ name, password });
+        ctx.body = {
+            code: 200,
+            result: { ...user, token },
+            success: true,
+            msg: '注册成功',
+        }
+    } else {
+        ctx.body = {
+            code: 200,
+            success: false,
+            msg: '两次密码必须一致',
+        }
+    }
+}
+
+
 module.exports = {
-    authLogin
+    authLogin,
+    authRegister
 }

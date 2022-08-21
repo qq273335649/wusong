@@ -20,7 +20,7 @@ module.exports = {
       ...userinfo,
     }, secret,
       {
-        expiresIn: '168h'
+        expiresIn: '168h' // token一周后过期
         // expiresIn: '24h'
       });
     return token;

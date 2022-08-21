@@ -10,5 +10,6 @@ const router = require('koa-router')()
 router.prefix('/auth')
 const authCtl = require('../controller/auth');
 router.post('/login', authCtl.authLogin);
+router.post('/register', authCtl.authRegister);
 
 module.exports = router

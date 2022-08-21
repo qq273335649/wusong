@@ -103,7 +103,7 @@ export default defineComponent({
       ruleFormRef.value?.validate(async (boolean, object) => {
         if (boolean) {
           const res = await postLogin({ ...values });
-          let user = res.data.user;
+          let user = res.data.result;
           if (user) {
             //获取完登录信息后操作
             store.commit("incToken", user.token);

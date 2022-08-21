@@ -9,17 +9,8 @@
 const { User } = require('../models/users');
 const crudUtil = require('../controller/crudUtil');
 const userAdd = async function (ctx, next) {
-    console.log(ctx.request.body);
-    const { name, password, repassword } = ctx.request.body;
-    if (password === repassword) {
-        await crudUtil.add(ctx, User, { name, password })
-    } else {
-        ctx.body = {
-            code: 200,
-            success: false,
-            msg: '两次密码必须一致',
-        }
-    }
+    const { name, password } = ctx.request.body;
+    await crudUtil.add(ctx, User, { name, password })
 }
 
 const userDel = async function (ctx) {

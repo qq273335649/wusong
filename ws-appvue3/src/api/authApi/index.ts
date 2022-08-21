@@ -1,5 +1,4 @@
-import { instance } from "@/request"
-
+import fetch from ".."
 /*
  * @Author: your name
  * @Date: 2022-02-21 11:19:12
@@ -9,7 +8,7 @@ import { instance } from "@/request"
  * @FilePath: \ws-appvue3\src\api\authApi\index.ts
  */
 const postLogin: any = async (data: any) => {
-    return await instance.post('/api/auth/login', { ...data })
+    return await fetch('/api/auth/login', { data })
 }
 
 export {

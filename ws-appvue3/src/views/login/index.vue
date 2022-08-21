@@ -10,10 +10,17 @@
       :rules="rules"
     >
       <el-form-item label="账号" prop="name">
-        <el-input v-model="formLabelAlign.name" placeholder="请输入账号" ></el-input>
+        <el-input
+          v-model="formLabelAlign.name"
+          placeholder="请输入账号"
+        ></el-input>
       </el-form-item>
       <el-form-item label="密码" prop="password">
-        <el-input type="password" v-model="formLabelAlign.password" placeholder="请输入密码"></el-input>
+        <el-input
+          type="password"
+          v-model="formLabelAlign.password"
+          placeholder="请输入密码"
+        ></el-input>
       </el-form-item>
       <el-form-item label="确认密码" prop="repassword">
         <el-input
@@ -23,7 +30,10 @@
         ></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="submitForm(ruleFormRef)"
+        <el-button
+          :loading="loading"
+          type="primary"
+          @click="submitForm(ruleFormRef)"
           >确认注册</el-button
         >
       </el-form-item>
@@ -31,7 +41,8 @@
   </div>
 </template>
 <script lang='ts'>
-import { defineComponent, getCurrentInstance, reactive, ref } from "vue";
+import { defineComponent, reactive, ref } from "vue";
+import * as loginApi from "./services";
 import { ElForm } from "element-plus";
 interface dataType {
   labelPosition: { pos: string };
@@ -39,9 +50,8 @@ interface dataType {
 export default defineComponent({
   setup() {
     type FormInstance = InstanceType<typeof ElForm>;
-    const internalInstance = getCurrentInstance();
-    console.log("internalInstance", internalInstance);
     const ruleFormRef = ref<FormInstance>();
+    let loading = ref<boolean>(false);
     const formLabelAlign = reactive({
       name: "",
       password: "",
@@ -56,21 +66,20 @@ export default defineComponent({
       if (!formEl) return;
       formEl.validate((valid) => {
         if (valid) {
-          console.log("submit!");
-          console.log(formLabelAlign);
-          internalInstance?.appContext.config.globalProperties.$http
-            .post("/api/users/add", { ...formLabelAlign })
-            .then((rel: any) => {
-              console.log(rel);
-              
-            });
+          loading.value = true;
+          loginApi.register({ ...formLabelAlign }).then((rel: any) => {
+            console.log(rel);
+            loading.value = false;
+          }).catch((err)=>{
+            console.log(err);
+            loading.value = false;
+          })
         } else {
-          console.log("error submit!");
           return false;
         }
       });
     };
-    return { rules, formLabelAlign, ruleFormRef, submitForm };
+    return { rules, formLabelAlign, loading, ruleFormRef, submitForm };
   },
   props: {},
   data(): dataType {
@@ -79,13 +88,7 @@ export default defineComponent({
     };
   },
   components: {},
-  methods: {
-    toRegister: function (values: any) {
-      this.$http.post("/api/users/add").then((rel) => {
-        console.log(rel);
-      });
-    },
-  },
+  methods: {},
 });
 </script>
 <style scoped lang='less'>

@@ -27,7 +27,7 @@
           </el-col>
           <!--登录按钮显示相关-->
           <el-col :span="4">
-            <el-row class="mb-4" align="middle" justify="end" v-if="!token">
+            <el-row class="mb-4" align="middle" justify="end" v-if="!user">
               <el-button @click="toLogin">登录</el-button>
               <el-button @click="toUser">注册</el-button>
             </el-row>
@@ -149,7 +149,7 @@ export default defineComponent({
   },
   computed: {
     routerPath: () => router.currentRoute.value.path,
-    ...mapState({ token: "token" }),
+    ...mapState({ user: "user" }),
   },
   methods: {
     toHome() {

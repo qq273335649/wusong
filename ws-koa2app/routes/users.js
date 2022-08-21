@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 router.prefix('/users')
 const userCtl = require('../controller/users');
-router.get('/', function (ctx, next) {
+router.get('/', function (ctx) {
   ctx.body = 'this is a users response!'
 })
 //添加

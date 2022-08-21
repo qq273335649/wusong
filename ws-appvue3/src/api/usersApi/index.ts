@@ -1,4 +1,5 @@
+import fetch from ".."
 
-// const postUsersAdd = async (data)=> ;
-
-// export { postUsersAdd }
+export const usersFind = (params?: { name: string }) => fetch("/api/users/find",
+    { method: "get", params },
+)

@@ -5,6 +5,7 @@
 </template>
 
 <script  lang="ts">
+import { usersFind } from "@/api/usersApi";
 import { ref, defineComponent } from "vue";
 
 export default defineComponent({
@@ -90,8 +91,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.$http
-      .get("/api/users/find")
+    usersFind()
       .then((rel) => {
         if (rel.data.code === 200) {
           this.users = rel.data.list;
