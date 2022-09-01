@@ -13,24 +13,26 @@
  * @param {*} data
  * @return {*}
  */
-const add = (ctx, model, data) => (
-    model.create(data).then((rel) => {
-        console.log(rel);
-        ctx.body = {
-            code: 200,
-            result: rel,
-            success: true
-        }
-    }).catch((err) => {
-        console.log(err);
-        ctx.body = {
-            code: 500,
-            result: err,
-            success: false,
-            msg: '添加失败',
-        }
+const add = (ctx, model, data) =>
+  model
+    .create(data)
+    .then((rel) => {
+      const { _id, name } = rel;
+      ctx.body = {
+        code: 200,
+        result: { _id, name },
+        success: true,
+      };
     })
-)
+    .catch((err) => {
+      console.log(err);
+      ctx.body = {
+        code: 500,
+        result: err,
+        success: false,
+        msg: "添加失败",
+      };
+    });
 /**
  * @description: 查询所有
  * @param {*} ctx
@@ -38,27 +40,29 @@ const add = (ctx, model, data) => (
  * @param {*} where
  * @return {*}
  */
-const find = (ctx, model, where = {}) => (
-    model.find(where).then((rel) => {
-        console.log(rel);
-        ctx.body = {
-            code: 200,
-            list: rel
-        }
-    }).catch((err) => {
-        console.log(err);
-        ctx.body = {
-            code: 500,
-            err
-        }
+const find = (ctx, model, where = {}) =>
+  model
+    .find(where)
+    .then((rel) => {
+      console.log(rel);
+      ctx.body = {
+        code: 200,
+        list: rel.map(({ _id, name }) => ({ _id, name })),
+      };
     })
-)
-const update = (ctx, model, where = {}) => (
-    model.updateOne(where).then(() => { })
-)
+    .catch((err) => {
+      console.log(err);
+      ctx.body = {
+        code: 500,
+        err,
+      };
+    });
+const update = (ctx, model, where = {}) =>
+  model.updateOne(where).then(() => {});
+
 module.exports = {
-    add,
-    // del,
-    update,
-    find
-}
+  add,
+  // del,
+  update,
+  find,
+};

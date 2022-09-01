@@ -16,11 +16,8 @@ const parameter = require('koa-parameter');
 const logger = require('koa-logger')
 const koajwt = require('koa-jwt')
 const MongooseConnect = require('./db');
-
-const index = require('./routes/index')
-const auth = require('./routes/auth')
-const users = require('./routes/users')
-const { secret } = require('./controller/token/addtoken')
+const { users, auth } = require('./routes');
+const { secret } = require('./controller/token/addtoken');
 const app = new Koa()
 MongooseConnect();
 // error handler
@@ -73,7 +70,6 @@ app.use(koajwt({
     ]
   }))
 // routes
-app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
 app.use(auth.routes(), auth.allowedMethods())
 
