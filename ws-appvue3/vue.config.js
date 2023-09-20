@@ -12,7 +12,7 @@ module.exports = {
     https: false,
     proxy: {
       '/api': { //用/api代替服务端真实地址
-        target: `http://localhost:3000`, //服务端真实地址
+        target: `//localhost:3000`, //服务端真实地址
         changeOrigin: true, //运行跨域
         pathRewrite: {
           '^/api': '' //请求的时候，地址重写
