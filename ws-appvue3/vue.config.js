@@ -10,6 +10,7 @@ module.exports = {
     // port: port,
     host: '0.0.0.0',
     https: false,
+    disableHostCheck: true,
     proxy: {
       '/api': { //用/api代替服务端真实地址
         target: `http://localhost:3000`, //服务端真实地址

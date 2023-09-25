@@ -54,7 +54,7 @@ export default defineComponent({
   methods: {
     beforeUpload(file: fileType){
       const isJPG = file.type === 'image/jpeg' || file.type === 'image/png';
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      const isLt2M = file.size / 1024 / 1024 < 200;
       if (!isJPG) {
         this.$message.error('上传文件只能是图片格式!');
       }
