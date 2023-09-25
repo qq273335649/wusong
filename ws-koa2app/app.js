@@ -67,11 +67,13 @@ app.use(koajwt({
 })
   .unless({
     path: [
+      /\/string/,
       /\/users/,
       /\/login/,
       /\/register/
     ]
   }))
+
 // routes
 app.use(index.routes(), index.allowedMethods())
 app.use(users.routes(), users.allowedMethods())
