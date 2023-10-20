@@ -20,7 +20,7 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'Base',
-    redirect: '/upload',
+    redirect: '/home',
   },
   {
     path: '/upload',

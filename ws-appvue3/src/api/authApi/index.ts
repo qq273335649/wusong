@@ -8,7 +8,7 @@ import fetch from ".."
  * @FilePath: \ws-appvue3\src\api\authApi\index.ts
  */
 const postLogin: any = async (data: any) => {
-    return await fetch('/api/auth/login', { data })
+    return await fetch('/api/auth/login', { method: "post", data })
 }
 
 export {
