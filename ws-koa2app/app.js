@@ -70,7 +70,8 @@ app.use(koajwt({
       /\/string/,
       /\/users/,
       /\/login/,
-      /\/register/
+      /\/register/,
+      /\/wxCode2Session/
     ]
   }))
 

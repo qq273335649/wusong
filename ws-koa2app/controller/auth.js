@@ -7,9 +7,15 @@
  * @FilePath: \vue\ws-koa2app\controller\auth.js
  */
 
+const APPID = "wxb34e640b1fcffc83";
+const SECRET = "2bf76de5b0e0099e73256a0e1bb1509f";
+
 const { User } = require('../models/users');
 const crudUtil = require('../controller/crudUtil');
 const { addtoken } = require('./token/addtoken');
+const koa2Req = require('koa2-request');
+let WXBizDataCrypt = require('../WXBizDataCrypt');
+const { log } = require('debug/src/browser');
 
 const authLogin = async function (ctx, next) {
     console.log('登录');
@@ -86,8 +92,51 @@ const authRegister = async function (ctx, next) {
     }
 }
 
+const authWxCode2Session = async function (ctx, next) {
+    const { body } = ctx.request;
+    if (body.js_code) {// TODO验证
+        // request选项
+        const res = await koa2Req(`https://api.weixin.qq.com/sns/jscode2session?appid=${APPID}&secret=${SECRET}&js_code=${body.js_code}&grant_type=authorization_code`);
+
+        let { session_key } = JSON.parse(res.body);
+
+        // 把加密数据里的空格换成+号，因为在传输过程中，服务器会把+号替换为空格。
+        // let encryptedData = body.encryptedData.replace(/ /g,'+')
+        // let iv = body.iv.replace(/ /g,'+');
+
+        let pc = new WXBizDataCrypt(APPID, session_key);  // 生成解**匙
+        let encodedata = pc.decryptData(body.encryptedData , body.iv); //  获取解密数据
+        console.log(encodedata,'encodedata');
+
+        const { nickName, avatarUrl, unionid } = encodedata;
+
+        console.log('session_key: ',session_key);
+        console.log('openId: ',encodedata.openId);
+
+        ctx.body = {
+            code: 200,
+            success: false,
+            msg: '验证成功',
+            userInfo: {
+                nickName,
+                avatarUrl,
+                token: 123,
+                uid: unionid,
+                ...encodedata,
+            }
+        }
+
+    } else {
+        ctx.body = {
+            code: 200,
+            success: false,
+            msg: '缺少code',
+        }
+    }
+}
 
 module.exports = {
+    authWxCode2Session,
     authLogin,
     authRegister
 }

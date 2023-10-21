@@ -11,5 +11,6 @@ router.prefix('/auth')
 const authCtl = require('../controller/auth');
 router.post('/login', authCtl.authLogin);
 router.post('/register', authCtl.authRegister);
+router.post('/wxCode2Session', authCtl.authWxCode2Session);
 
 module.exports = router
